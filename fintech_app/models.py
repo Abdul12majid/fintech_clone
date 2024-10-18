@@ -11,9 +11,15 @@ class WalletType(models.Model):
     def __str__(self):
     	return self.type
 
+def get_default_wallet():
+    try:
+        return WalletType.objects.get(type="Bonus")
+    except WalletType.DoesNotExist:
+        return None
+
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    wallet_type = models.ForeignKey(WalletType, on_delete=models.CASCADE)
+    wallet_type = models.ForeignKey(WalletType, on_delete=models.CASCADE, default=get_default_wallet)
     total_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     
 
