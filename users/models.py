@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
-from fintech_app.models import Transaction
+from fintech_app.models import Transaction, Wallet
 from django.db.models.signals import post_save
 
 # Create your models here.
 
 class Profile(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE)
+    wallet=models.ManyToManyField(Wallet)
     phone_no = models.CharField(max_length=255)
     date_of_birth=models.DateTimeField(auto_now=True)
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)

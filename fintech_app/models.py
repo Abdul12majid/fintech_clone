@@ -15,12 +15,10 @@ class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     wallet_type = models.ForeignKey(WalletType, on_delete=models.CASCADE)
     total_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    savings_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    spending_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    bonus_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
+    
 
     def __str__(self):
-    	return f'{self.user.username} wallet'
+    	return f'{self.user.username} - {self.wallet_type.type} wallet'
 
 
 class Transaction(models.Model):
