@@ -23,6 +23,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Wallet
-		fields = ('user', 'total_balance')
+    wallet_type = serializers.CharField(source='wallet_type.type')
+
+    class Meta:
+        model = Wallet
+        fields = ('wallet_type', 'total_balance')

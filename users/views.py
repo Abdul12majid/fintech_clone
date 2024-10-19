@@ -15,6 +15,13 @@ def index(request):
 	return Response({'info':serializer.data})
 
 
+@api_view(['GET'])
+def wallets(request):
+	user = request.user
+	user_wallets = Wallet.objects.filter(user=user).all()
+	serializer = AccountSerializer(user_wallets, many=True)
+	return Response({'info':serializer.data})
 
 
-	
+
+
