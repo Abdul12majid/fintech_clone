@@ -14,7 +14,6 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to='profile_images', null=True, blank=True)
     profile_bio=models.TextField(null=True, blank=True, max_length=500)
     transactions = models.ManyToManyField(Transaction, symmetrical=False, blank=True)
-    book_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
