@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fintech_app',
     'users',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
