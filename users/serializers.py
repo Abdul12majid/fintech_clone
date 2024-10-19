@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Profile
-from fintech_app.models import Wallet, WalletType
+from fintech_app.models import Wallet, WalletType, Transaction
 from django.contrib.auth.models import User
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -28,3 +28,9 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
         fields = ('wallet_type', 'total_balance')
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class meta:
+        model = Transaction
+        fields = ('id', 'wallet_type', 'wallet', 'receiver', 'amount', 'description', 'created_at')

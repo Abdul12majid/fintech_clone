@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from .models import Profile
-from fintech_app.models import Wallet
+from fintech_app.models import Wallet, Transaction
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import AccountSerializer, ProfileSerializer
+from .serializers import AccountSerializer, ProfileSerializer, TransactionSerializer
 
 
 # Create your views here.
@@ -23,5 +23,8 @@ def wallets(request):
 	return Response({'info':serializer.data})
 
 
-
-
+@api_view(['POST'])
+def send(request):
+	serializer = TransactionSerializer(data=request.data)
+	get_wallet = Wallet.objects.get()
+	return Response({'info':'xxx'})
