@@ -34,3 +34,10 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = ('id', 'receiver', 'amount', 'description')
+
+
+class ShowTransaction(serializers.ModelSerializer):
+    wallet = serializers.CharField(source='wallet.user.username')
+    class Meta:
+        model = Transaction
+        fields = ('id', 'wallet', 'receiver', 'amount', 'description', 'created_at',)

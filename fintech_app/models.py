@@ -38,5 +38,5 @@ class Transaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.wallet.user.username
+        return f'{self.wallet.user.username} to {self.receiver.user.username}'
 

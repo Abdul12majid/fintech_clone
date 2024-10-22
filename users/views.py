@@ -3,7 +3,7 @@ from .models import Profile
 from fintech_app.models import Wallet, Transaction, WalletType
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import AccountSerializer, ProfileSerializer, TransactionSerializer
+from .serializers import AccountSerializer, ProfileSerializer, TransactionSerializer, ShowTransaction
 
 
 # Create your views here.
@@ -44,7 +44,9 @@ def send(request):
 					receiver=get_receiver_id,
 					amount=amount,
 					description=description)
-				return Response({'info':'Transaction made'})
+				get_last = Transaction.objects.filter(wallet=get_sender_wallet).last()
+				show_trans = ShowTransaction(get_last, many=False)
+				return Response({'info':show_trans.data})
 			else:
 				return Response({'info':"can't send to a bonus account"})
 
