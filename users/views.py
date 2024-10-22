@@ -32,7 +32,7 @@ def send(request):
 	if serializer.is_valid():
 		receiver_id = request.data['receiver']
 		amount = request.data['amount']
-		description = request.data['description']
+		description = request.data.get('description', '')
 		get_sender_wallet = Wallet.objects.get(user=request.user, wallet_type=type_spending)
 		sender_wallet_type = get_sender_wallet.wallet_type
 		get_receiver_id = Wallet.objects.get(id=receiver_id)
