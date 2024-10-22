@@ -25,31 +25,26 @@ def wallets(request):
 
 @api_view(['POST', 'GET'])
 def send(request):
+	user_profile = request.user.profile
 	serializer = TransactionSerializer(data=request.data)
 	if serializer.is_valid():
-		get_wallet_type = request.data['wallet_type']
-		wallet_type = WalletType.objects.get(id=get_wallet_type)
-		user_profile = request.user.profile
-		if get_wallet_type in user_profile.wallet.all():
-			get_wallet = Wallet.objects.get(
-				wallet_type=get_wallet_type,
-				user=request.user)
-			user_wallet = get_wallet.id
-
-			receiver = request.data['receiver']
-			receiver_wallet = Wallet.objects.get(id=receiver)
-			amount = request.data['amount']
-			description = request.data['description']
-			if receiver_wallet.wallet_type != "Bonus":
+		receiver_id = request.data['receiver']
+		amount = request.data['amount']
+		description = request.data['description']
+		get_sender_wallet = Wallet.objects.get(user=request.user, wallet_type="Spending")
+		sender_wallet_type = get_sender_wallet.wallet_type
+		if receiver_id in Wallet.objects.all():
+			get_receiver_id = Wallet.objects.get(id=receiver_id)
+			if get_receiver_id.wallet_type.type != "Bonus":
 				Transaction.objects.create(
-					wallet_type=wallet_type,
-					wallet=user_wallet,
-					receiver=receiver_wallet,
+					wallet_type=sender_wallet_type,
+					wallet=get_sender_wallet,
+					receiver=receiver_id,
 					amount=amount,
 					description=description)
 				return Response({'info':'Transaction made'})
 			else:
-				return Response({'info':'cant send to a bonus account'})
-		return Response({'info':'user does not have this account'})
+				return Response({'info':"can't send to a bonus account"})
+		return Response({'info':'account does not exist'})
 	return Response({'info':serializer.errors})
 
