@@ -35,13 +35,14 @@ def send(request):
 		description = request.data.get('description', '')
 		get_sender_wallet = Wallet.objects.get(user=request.user, wallet_type=type_spending)
 		sender_wallet_type = get_sender_wallet.wallet_type
-		get_receiver_id = Wallet.objects.get(id=receiver_id)
+		get_receiver_id = Wallet.objects.filter(id=receiver_id).exists()
 		if get_receiver_id:
-			if get_receiver_id.wallet_type.type != "Bonus":
+			get_id = Wallet.objects.get(id=receiver_id)
+			if get_id.wallet_type.type != "Bonus":
 				Transaction.objects.create(
 					wallet_type=sender_wallet_type,
 					wallet=get_sender_wallet,
-					receiver=get_receiver_id,
+					receiver=get_id,
 					amount=amount,
 					description=description)
 				get_last = Transaction.objects.filter(wallet=get_sender_wallet).last()
@@ -49,7 +50,7 @@ def send(request):
 				return Response({'info':show_trans.data})
 			else:
 				return Response({'info':"can't send to a bonus account"})
-
-		return Response({'info':'account does not exist'})
+		else:
+			return Response({'info':'account does not exist'})
 	return Response({'info':serializer.errors})
 

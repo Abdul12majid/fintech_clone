@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Profile
+from rest_framework.validators import ValidationError
 from fintech_app.models import Wallet, WalletType, Transaction
 from django.contrib.auth.models import User
 
@@ -35,9 +36,16 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = ('id', 'receiver', 'amount', 'description')
 
+    def validate(self, attrs):
+        check_receiver = Wallet.objects.filter(id=attrs['receiver']).exists()
+        if not check_receiver:
+            raise ValidationError("invalid wallet")
+
 
 class ShowTransaction(serializers.ModelSerializer):
     wallet = serializers.CharField(source='wallet.user.username')
     class Meta:
         model = Transaction
         fields = ('id', 'wallet', 'receiver', 'amount', 'description', 'created_at',)
+    
+    
