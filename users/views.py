@@ -76,7 +76,24 @@ def login_user(request):
 def register(request):
 	serializer = SignUpSerializer(data=request.data)
 	if serializer.is_valid():
+		username = request.data['username']
+		password = request.data['password']
+
+		#create user
 		serializer.save()
+		get_user = User.objects.get(username=username)
+
+		#authenticate user
+		user=authenticate(username=username, password=password)
+		login(request, user)
+
+		#create spending wallet for user
+		type_spending = WalletType.objects.get(id=1)
+		user_profile = request.user
+		Wallet.objects.create(
+			user=user_profile,
+			wallet_type = type_spending)
+		
 		response = {
 			"info":"Registeration successful",
 			"data":serializer.data
