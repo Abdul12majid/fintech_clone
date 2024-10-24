@@ -54,3 +54,5 @@ def send(request):
 			return Response({'info':'account does not exist'})
 	return Response({'info':serializer.errors})
 
+
+

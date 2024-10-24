@@ -47,5 +47,10 @@ class ShowTransaction(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = ('id', 'wallet', 'receiver', 'amount', 'description', 'created_at',)
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=500)
+    password = serializers.CharField(max_length=500, write_only=True)
     
     
