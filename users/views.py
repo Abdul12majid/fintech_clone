@@ -95,10 +95,12 @@ def register(request):
 			user=user_profile,
 			wallet_type = type_spending)
 
+		#add wallet type to profile
 		profile = user_profile.profile
 		profile.wallet.add(type_spending)
 		profile.save()
 
+		#add user to wallet
 		type_spending.users.add(user_profile)
 		type_spending.save()
 
