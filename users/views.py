@@ -99,6 +99,9 @@ def register(request):
 		profile.wallet.add(type_spending)
 		profile.save()
 
+		type_spending.users.add(user_profile)
+		type_spending.save()
+
 		response = {
 			"info":"Registeration successful",
 			"data":serializer.data
