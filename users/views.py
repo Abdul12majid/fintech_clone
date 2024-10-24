@@ -72,3 +72,14 @@ def login_user(request):
 
 	return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST', 'GET'])	
+def register(request):
+	serializer = SignUpSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+		response = {
+			"info":"Registeration successful",
+			"data":serializer.data
+		}
+		return Response(data=response, status=status.HTTP_201_CREATED)
+	return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
