@@ -4,7 +4,7 @@ from fintech_app.models import Transaction, WalletType, Wallet
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# Create your models here.
+# Create your models here. 
 
 class Profile(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE)
@@ -30,4 +30,6 @@ def create_profile(sender, instance, created, **kwargs):
         get_bonus_wallet = WalletType.objects.get(type='Bonus')
         user_profile.wallet.add(get_bonus_wallet)
         user_profile.save()
+        get_bonus_wallet.users.add(instance)
+        get_bonus_wallet.save()
 post_save.connect(create_profile, sender=User)

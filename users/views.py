@@ -5,8 +5,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import AccountSerializer, ProfileSerializer, TransactionSerializer, ShowTransaction
-from .serializers import LoginSerializer
+from .serializers import LoginSerializer, SignUpSerializer
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 
 # Create your views here.
 @api_view(['GET'])
@@ -93,7 +94,11 @@ def register(request):
 		Wallet.objects.create(
 			user=user_profile,
 			wallet_type = type_spending)
-		
+
+		profile = user_profile.profile
+		profile.wallet.add(type_spending)
+		profile.save()
+
 		response = {
 			"info":"Registeration successful",
 			"data":serializer.data

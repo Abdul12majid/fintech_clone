@@ -6,5 +6,6 @@ urlpatterns = [
     path('wallets', views.wallets),
     path('send', views.send),
     path('login', views.login_user),
+    path('register', views.register),
     
 ]
