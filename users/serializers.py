@@ -32,6 +32,8 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    receiver = serializers.UUIDField()
+
     class Meta:
         model = Transaction
         fields = ('id', 'receiver', 'amount', 'description')
@@ -40,6 +42,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         check_receiver = Wallet.objects.filter(id=attrs['receiver']).exists()
         if not check_receiver:
             raise ValidationError("invalid wallet")
+        return check_receiver
 
 
 class ShowTransaction(serializers.ModelSerializer):
