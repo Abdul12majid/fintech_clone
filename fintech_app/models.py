@@ -23,7 +23,8 @@ class Wallet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     wallet_type = models.ForeignKey(WalletType, on_delete=models.CASCADE, default=get_default_wallet)
     total_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    
+    pin = models.CharField(max_length=20, default="0000")
+
     def __str__(self):
     	return f'{self.user.username} - {self.wallet_type.type} wallet'
 
