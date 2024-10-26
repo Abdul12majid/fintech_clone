@@ -31,9 +31,6 @@ def send(request):
 	type_spending = WalletType.objects.get(id=1)
 	user_profile = request.user.profile
 	serializer = TransactionSerializer(data=request.data)
-	user = "5d71bcc8-db89-4dee-ad29-1b7eba9ab2a9"
-	get_user = Wallet.objects.get(id=user)
-	print(get_user.user.username)
 	if serializer.is_valid():
 		receiver_id = request.data['receiver']
 		amount = request.data['amount']
@@ -60,7 +57,7 @@ def send(request):
 				get_id.save()
 
 				#display transaction made
-				get_last = Transaction.objects.filter(wallet=get_sender_wallet).last()
+				get_last = Transaction.objects.filter(wallet=get_sender_wallet).order_by('-created_at').first()
 				show_trans = ShowTransaction(get_last, many=False)
 				return Response({'info':show_trans.data})
 			else:
