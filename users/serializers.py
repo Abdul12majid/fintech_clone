@@ -36,7 +36,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('id', 'receiver', 'amount', 'description')
+        fields = ('id', 'receiver', 'amount', 'pin', 'description')
 
     def validate(self, attrs):
         check_receiver = Wallet.objects.filter(id=attrs['receiver']).exists()
