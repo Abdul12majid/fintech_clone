@@ -33,6 +33,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class TransactionSerializer(serializers.ModelSerializer):
     receiver = serializers.UUIDField()
+    pin = serializers.CharField(required=True)
 
     class Meta:
         model = Transaction
