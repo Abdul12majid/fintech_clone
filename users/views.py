@@ -138,3 +138,15 @@ def transactions(request):
 	get_trans = Transaction.objects.filter(wallet=get_user_wallet).all()
 	show_trans = ShowTransaction(get_trans, many=True)
 	return Response({'info':show_trans.data})
+
+
+@api_view(['GET'])
+def transaction(request, pk):
+	get_trans = Transaction.objects.get(id=pk)
+	if get_trans:
+		show_trans = ShowTransaction(get_trans, many=False)
+		return Response({'info':show_trans.data})
+	else:
+		return Response({'info':"Transaction not found"})
+	
+	
