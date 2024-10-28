@@ -127,3 +127,14 @@ def register(request):
 		}
 		return Response(data=response, status=status.HTTP_201_CREATED)
 	return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET'])
+def transactions(request):
+	user = request.user
+	type_spending = WalletType.objects.get(id=1)
+	get_user_wallet = Wallet.objects.get(user=user, wallet_type=type_spending)
+	get_trans = Transaction.objects.filter(wallet=get_user_wallet).all()
+	show_trans = ShowTransaction(get_trans, many=True)
+	return Response({'info':show_trans.data})
