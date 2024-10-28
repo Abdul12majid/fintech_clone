@@ -35,31 +35,39 @@ def send(request):
 		receiver_id = request.data['receiver']
 		amount = request.data['amount']
 		description = request.data.get('description', '')
+		pin = request.data['pin']
 		get_sender_wallet = Wallet.objects.get(user=request.user, wallet_type=type_spending)
 		sender_wallet_type = get_sender_wallet.wallet_type
 		get_receiver_id = Wallet.objects.filter(id=receiver_id).exists()
+		get_sender_pin = get_sender_wallet.pin
 		if get_receiver_id:
 			get_id = Wallet.objects.get(id=receiver_id)
 			if get_id.wallet_type.type != "Bonus":
-				Transaction.objects.create(
-					wallet_type=sender_wallet_type,
-					wallet=get_sender_wallet,
-					receiver=get_id,
-					amount=amount,
-					description=description)
+				if pin != "0000":
+					if get_sender_pin == pin:
+						Transaction.objects.create(
+							wallet_type=sender_wallet_type,
+							wallet=get_sender_wallet,
+							receiver=get_id,
+							amount=amount,
+							description=description)
 
-				#remove amount from sender wallet
-				get_sender_wallet.total_balance -= int(amount)
-				get_sender_wallet.save()
+						#remove amount from sender wallet
+						get_sender_wallet.total_balance -= int(amount)
+						get_sender_wallet.save()
 
-				#add amount to receiver wallet
-				get_id.total_balance += int(amount)
-				get_id.save()
+						#add amount to receiver wallet
+						get_id.total_balance += int(amount)
+						get_id.save()
 
-				#display transaction made
-				get_last = Transaction.objects.filter(wallet=get_sender_wallet).order_by('-created_at').first()
-				show_trans = ShowTransaction(get_last, many=False)
-				return Response({'info':show_trans.data})
+						#display transaction made
+						get_last = Transaction.objects.filter(wallet=get_sender_wallet).order_by('-created_at').first()
+						show_trans = ShowTransaction(get_last, many=False)
+						return Response({'info':show_trans.data})
+					else:
+						return Response({'info':"Wrong pin, try again"})
+				else:
+					return Response({'info':"Default pin can't be used, change pin."})
 			else:
 				return Response({'info':"can't send to a bonus account"})
 		else:
