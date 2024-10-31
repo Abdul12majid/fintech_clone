@@ -8,6 +8,7 @@ from .serializers import AccountSerializer, ProfileSerializer, TransactionSerial
 from .serializers import LoginSerializer, SignUpSerializer
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+from uuid import UUID
 
 # Create your views here.
 @api_view(['GET'])
@@ -147,6 +148,6 @@ def transaction(request, pk):
 		show_trans = ShowTransaction(get_trans, many=False)
 		return Response({'info':show_trans.data})
 	else:
-		return Response({'info':"Transaction not found"})
+		return Response({'info':"Transaction"})
 	
 	
