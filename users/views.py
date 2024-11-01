@@ -4,7 +4,8 @@ from fintech_app.models import Wallet, Transaction, WalletType
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import AccountSerializer, ProfileSerializer, TransactionSerializer, ShowTransaction
+from .serializers import AccountSerializer, ProfileSerializer, TransactionSerializer
+from fintech_app.serializers import ShowTransaction
 from .serializers import LoginSerializer, SignUpSerializer
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
