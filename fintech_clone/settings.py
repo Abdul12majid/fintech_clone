@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'fintech_app',
     'users',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
