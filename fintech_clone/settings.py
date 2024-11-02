@@ -56,6 +56,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'fintech_clone.urls'
 
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10  
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
